@@ -10,7 +10,7 @@ describe("Error Middleware", () => {
     res = httpMocks.createResponse();
     next = jest.fn();
 
-    errorSpy = jest.spyOn(console, "log").mockImplementation(() => { });
+    errorSpy = jest.spyOn(console, "log").mockImplementation(() => {});
   });
 
   afterEach(() => {
