@@ -68,7 +68,7 @@ describe("Error Middleware", () => {
 
     expect(res.statusCode).toBe(400);
     expect(res._getJSONData().message).toContain(
-      "Duplicate field value entered",
+      "Duplicate field value entered"
     );
   });
 

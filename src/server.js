@@ -5,7 +5,7 @@ const connectDB = require("./configs/db.js");
 connectDB();
 
 const server = app.listen(config.port, () =>
-  console.log(`Server running on port: ${config.port}`),
+  console.log(`Server running on port: ${config.port}`)
 );
 
 const gracefulShutdown = (signal) => {

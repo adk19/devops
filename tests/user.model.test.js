@@ -1,5 +1,4 @@
 // test/user.model.test.js
-const mongoose = require("mongoose");
 const User = require("../src/models/userModel.js");
 
 describe("User Model", () => {

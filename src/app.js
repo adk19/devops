@@ -43,7 +43,7 @@ const corsOptions = {
 
     return callback(
       new Error(`CORS blocked: Origin not allowed (${origin})`),
-      false,
+      false
     );
   },
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
@@ -59,17 +59,15 @@ app.use(cors(corsConfig));
 app.get("/checkz", (req, res) =>
   res
     .status(200)
-    .json({ status: true, message: "API is running successfully!" }),
+    .json({ status: true, message: "API is running successfully!" })
 );
 app.get("/helthz", (req, res) =>
-  res
-    .status(200)
-    .json({
-      status: true,
-      uptime: process.uptime(),
-      timestamp: new Date(),
-      enviroment: config.env,
-    }),
+  res.status(200).json({
+    status: true,
+    uptime: process.uptime(),
+    timestamp: new Date(),
+    enviroment: config.env,
+  })
 );
 
 // API Routes
@@ -78,7 +76,7 @@ app.use("/api", Routes);
 app.get("/", (req, res) =>
   res
     .status(200)
-    .json({ status: true, message: "API is running successfully!" }),
+    .json({ status: true, message: "API is running successfully!" })
 );
 
 // Error handling middleware

@@ -1,20 +1,16 @@
 const ApiError = require("../utils/ApiErrors.js");
 
-const errorHandler = (err, req, res, next) => {
-  console.log("ERROR=>:", err);
+const errorHandler = (err, req, res) => {
   let error = { ...err };
   error.message = err.message;
 
-  console.log("ERROR-RED=>:", err?.stack?.red || err?.message?.red);
-  console.log("Name=:>", err);
-
   if (err.name === "CastError") {
-    const message = `Resource not found`;
+    const message = "Resource not found";
     error = new ApiError(404, message);
   }
 
   if (err.code === 11000) {
-    const message = `Duplicate field value entered`;
+    const message = "Duplicate field value entered";
     error = new ApiError(400, message);
   }
 

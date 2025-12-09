@@ -10,7 +10,10 @@ describe("Server", () => {
   });
 
   it("should handle JSON parsing error", async () => {
-    const res = await request(app).post("/api/user").set("Content-Type", "application/json").send("invalid-json");
+    const res = await request(app)
+      .post("/api/user")
+      .set("Content-Type", "application/json")
+      .send("invalid-json");
 
     expect(res.statusCode).toBe(400);
     expect(res.body.success).toBe(false);
@@ -24,6 +27,8 @@ describe("Server", () => {
       .set("Access-Control-Request-Headers", "content-type");
 
     expect(res.statusCode).toBe(204);
-    expect(res.headers["access-control-allow-origin"]).toBe("http://localhost:3000");
+    expect(res.headers["access-control-allow-origin"]).toBe(
+      "http://localhost:3000"
+    );
   });
 });
