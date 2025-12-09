@@ -2,13 +2,12 @@
 const request = require("supertest");
 const mongoose = require("mongoose");
 
+// Import setup to configure environment and MongoDB
+require("./setup.js");
+
 const app = require("../src/app.js");
 
 describe("CORS Middleware", () => {
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
   it("should allow requests from allowed origins", async () => {
     const origin = "http://allowed-origin.com";
 

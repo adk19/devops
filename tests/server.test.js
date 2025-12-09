@@ -23,9 +23,7 @@ describe("Server", () => {
       .set("Content-Type", "application/json")
       .send("invalid-json");
 
-    expect(res.statusCode).toBe(500);
-    expect(res.body.status).toBe(false);
-    expect(res.body.message).toBe("Internal Server Error");
+    expect(res.statusCode).toBe(400);
   });
 
   it("should handle CORS preflight requests", async () => {

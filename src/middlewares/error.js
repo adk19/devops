@@ -1,6 +1,6 @@
 const ApiError = require("../utils/ApiErrors.js");
 
-const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res) => {
   // Check if the error is an instance of ApiError
   if (err instanceof ApiError) {
     return res

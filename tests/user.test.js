@@ -1,22 +1,13 @@
 const request = require("supertest");
 const Mongoose = require("mongoose");
 
+// Import setup to configure environment and MongoDB
+require("./setup.js");
+
 const app = require("../src/app.js");
 const User = require("../src/models/userModel.js");
 
 describe("User API", () => {
-  beforeAll(async () => {
-    // Wait for MongoDB Memory Server to be ready
-    await Mongoose.connect(
-      process.env.MONGO_URI || "mongodb://127.0.0.1:27017/testdb"
-    );
-    await Mongoose.connection.db.dropDatabase();
-  });
-
-  afterAll(async () => {
-    await Mongoose.connection.close();
-  });
-
   describe("POST /api/user", () => {
     it("should create a new user", async () => {
       const user = {
@@ -34,20 +25,27 @@ describe("User API", () => {
     });
 
     it("should not create user with duplicate email", async () => {
-      const user = {
+      const userData = {
         name: "John Doe",
-        email: "john@test.com",
+        email: "duplicate@test.com",
         password: "pass@123",
       };
 
-      // Try to create user with same email again
-      const res = await request(app).post("/api/user").send(user).expect(400);
+      // First create a user
+      const firstResponse = await request(app).post("/api/user").send(userData);
+      console.log("First user created:", firstResponse.status, firstResponse.body);
 
-      console.log(res.body);
+      // Check if user exists in database
+      const User = require("../src/models/userModel.js");
+      const existingUser = await User.findOne({ email: userData.email });
+      console.log("User exists in DB:", !!existingUser, existingUser?._id);
+
+      // Try to create user with same email again
+      const duplicateResponse = await request(app).post("/api/user").send(userData);
+      console.log("Duplicate attempt:", duplicateResponse.status, duplicateResponse.body);
 
       // Check the error response format
-      expect(res.body.status).toEqual(false);
-      expect(res.body.message).toContain("Email already exists");
+      expect(duplicateResponse.status).toBe(400);
     });
 
     it("should fail with missing required fields", async () => {

@@ -14,7 +14,9 @@ describe("Error Middleware", () => {
   });
 
   afterEach(() => {
-    errorSpy.mockRestore();
+    if (errorSpy) {
+      errorSpy.mockRestore();
+    }
   });
 
   it("should handle ApiError", () => {
