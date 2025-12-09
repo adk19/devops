@@ -16,7 +16,7 @@ module.exports = (schema) => (req, res, next) => {
       .validate(object);
     if (error) {
       const errorMsg = error.details.map((detail) => detail.message).join(", ");
-      return res.status(400).json({ success: false, error: errorMsg });
+      return res.status(400).json({ status: false, error: errorMsg });
     }
 
     // Safely merge validated data instead of reassigning

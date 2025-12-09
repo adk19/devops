@@ -79,6 +79,10 @@ app.get("/", (req, res) =>
     .json({ status: true, message: "API is running successfully!" })
 );
 
+app.use((req, res, next) => {
+  res.status(404).json({ error: "Not Found" });
+});
+
 // Error handling middleware
 app.use(errorMiddleware);
 

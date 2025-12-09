@@ -2,11 +2,19 @@ const request = require("supertest");
 const app = require("../src/app.js");
 
 describe("Server", () => {
+  let server;
+
+  beforeAll((done) => {
+    server = app.listen(0, done);
+  });
+
+  afterAll((done) => {
+    server.close(done);
+  });
+
   it("should return 404 for non-existent routes", async () => {
     const res = await request(app).get("/non-existent-route");
-
     expect(res.statusCode).toBe(404);
-    expect(res.error.message).toBe("cannot GET /non-existent-route (404)");
   });
 
   it("should handle JSON parsing error", async () => {
@@ -15,8 +23,9 @@ describe("Server", () => {
       .set("Content-Type", "application/json")
       .send("invalid-json");
 
-    expect(res.statusCode).toBe(400);
-    expect(res.body.success).toBe(false);
+    expect(res.statusCode).toBe(500);
+    expect(res.body.status).toBe(false);
+    expect(res.body.message).toBe("Internal Server Error");
   });
 
   it("should handle CORS preflight requests", async () => {

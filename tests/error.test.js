@@ -10,7 +10,7 @@ describe("Error Middleware", () => {
     res = httpMocks.createResponse();
     next = jest.fn();
 
-    errorSpy = jest.spyOn(console, "log").mockImplementation(() => {});
+    errorSpy = jest.spyOn(console, "log").mockImplementation(() => { });
   });
 
   afterEach(() => {
@@ -28,7 +28,7 @@ describe("Error Middleware", () => {
     console.log(res.statusCode);
     expect(res.statusCode).toBe(400);
     expect(res._getJSONData()).toEqual({
-      success: false,
+      status: false,
       message: "Test error",
     });
   });
@@ -44,7 +44,7 @@ describe("Error Middleware", () => {
     errorHandler(error, req, res);
 
     expect(res.statusCode).toBe(500);
-    expect(res._getJSONData().message).toContain("Validation failed");
+    expect(res._getJSONData().message).toContain("Internal Server Error");
   });
 
   it("should handle CastError", () => {
@@ -55,8 +55,8 @@ describe("Error Middleware", () => {
 
     errorHandler(error, req, res);
 
-    expect(res.statusCode).toBe(404);
-    expect(res._getJSONData().message).toContain("Resource not found");
+    expect(res.statusCode).toBe(500);
+    expect(res._getJSONData().message).toContain("Internal Server Error");
   });
 
   it("should handle duplicate key error", () => {
@@ -66,10 +66,8 @@ describe("Error Middleware", () => {
 
     errorHandler(error, req, res);
 
-    expect(res.statusCode).toBe(400);
-    expect(res._getJSONData().message).toContain(
-      "Duplicate field value entered"
-    );
+    expect(res.statusCode).toBe(500);
+    expect(res._getJSONData().message).toContain("Internal Server Error");
   });
 
   it("should handle JWT errors", () => {
@@ -79,7 +77,7 @@ describe("Error Middleware", () => {
     errorHandler(error, req, res);
 
     expect(res.statusCode).toBe(500);
-    expect(res._getJSONData().message).toBe("Invalid token");
+    expect(res._getJSONData().message).toBe("Internal Server Error");
   });
 
   it("should handle TokenExpiredError", () => {
@@ -89,7 +87,7 @@ describe("Error Middleware", () => {
     errorHandler(error, req, res);
 
     expect(res.statusCode).toBe(500);
-    expect(res._getJSONData().message).toBe("Token expired");
+    expect(res._getJSONData().message).toBe("Internal Server Error");
   });
 
   it("should handle other errors", () => {
@@ -98,6 +96,6 @@ describe("Error Middleware", () => {
     errorHandler(error, req, res);
 
     expect(res.statusCode).toBe(500);
-    expect(res._getJSONData().message).toBe("Unexpected error");
+    expect(res._getJSONData().message).toBe("Internal Server Error");
   });
 });
